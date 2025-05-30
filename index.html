@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Audio Visual Experience</title>
     <link rel="stylesheet" href="./visual_files/09671da28aa56a04.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         /* Custom styles for better cross-platform compatibility */
         .audio-controls {
@@ -237,14 +238,11 @@
         }
     </style>
 </head>
-<body>
+<body data-new-gr-c-s-check-loaded="14.1105.0" data-gr-ext-installed="">
     <div id="__next">
         <div id="asset_loader_wrapper" class="asset-loader-wrapper"></div>
         <div id="rec_wrapper" class="rec-wrapper"></div>
         <div id="app_root">
-            <div class="loading-bar">
-                <div class="loading-bar-progress" id="loading_bar_progress"></div>
-            </div>
             <div id="audio_load_bar" class="audio-load-bar">
                 <div class="audio-load-bar-progress" id="audio_load_bar_progress"></div>
             </div>
@@ -252,59 +250,95 @@
                 <source src="./visual_files/audio/tremowaves_postrock.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <div role="presentation" id="background_scene" class="background-scene">
-                <canvas data-engine="three.js r160" class="renderer-canvas"></canvas>
+            <div role="presentation" id="background_scene" class="background-scene" style="position: fixed; top: 0px; left: 0px; width: 100vw; height: 100vh; z-index: 0; opacity: 0.4321;">
+                <canvas data-engine="three.js r160" width="1432" height="718" class="renderer-canvas" style="display: block; width: 1432px; height: 718px;"></canvas>
             </div>
             <div class="scene-nametag-wrapper">
-                <span class="scene-info-tag">12/12</span>
-                <span class="scene-name-tag">Swarm</span>
+                <span class="scene-info-tag" style="opacity: 0;">12/12</span>
+                <span class="scene-name-tag" style="opacity: 0;">Swarm</span>
             </div>
-            
-            <!-- Audio Controls -->
-            <div class="audio-controls">
-                <button class="audio-button" id="playlist_button" title="Playlist">
-                    <i class="fa-thin fa-list"></i>
-                </button>
-                <button class="audio-button" id="play_pause_button" title="Play/Pause">
-                    <i class="fa-thin fa-play"></i>
-                </button>
-                <div class="audio-progress" id="audio_progress">
-                    <div class="audio-progress-bar" id="audio_progress_bar"></div>
+            <div class="top-bar plain">
+                <div class="loading-bar" id="loading_bar"></div>
+            </div>
+            <div class="main-contols-wrapper" style="height: 70px; line-height: 70px;">
+                <div class="toggler-wrapper" style="width: 70px; height: 70px;">
+                    <i class="fa-thin fa-power-off"></i>
+                    <span class="temptip--triangle" data-tooltip="Play with me 😉"></span>
                 </div>
-                <span class="audio-time" id="current_time">0:00</span>
-                <span class="audio-time" id="duration">0:00</span>
-                <button class="audio-button" id="volume_button" title="Mute/Unmute">
-                    <i class="fa-thin fa-volume-high"></i>
-                </button>
+                <div class="control-buttons">
+                    <div id="load_audio_button" class="button fa-thin fa-circle-play inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0s; cursor: default;">
+                        <span class="tooltip--triangle load_audio" data-tooltip="I'm Audio-reactive! Try my Jam 😃"></span>
+                    </div>
+                    <div id="first_scene_button" class="button fa-thin fa-circle-chevron-up inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.12s; cursor: default;">
+                        <span class="tooltip--triangle first_scene" data-tooltip="Rewind to First Scene"></span>
+                    </div>
+                    <div id="prev_scene_button" class="button fa-thin fa-circle-chevron-left inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.24s; cursor: default;">
+                        <span class="tooltip--triangle prev_scene" data-tooltip="Load Previous Scene"></span>
+                    </div>
+                    <div id="next_scene_button" class="button fa-thin fa-circle-chevron-right inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.36s; cursor: default;">
+                        <span class="tooltip--triangle next_scene" data-tooltip="Load Next Scene"></span>
+                    </div>
+                    <div id="rand_scene_button" class="button fa-thin fa-shuffle inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.48s; cursor: default;">
+                        <span class="tooltip--triangle rand_scene" data-tooltip="Load Random Scene"></span>
+                    </div>
+                </div>
             </div>
-
-            <!-- Scene Controls -->
-            <div class="scene-controls">
-                <button class="scene-button" id="first_scene_button" title="First Scene">
-                    <i class="fa-thin fa-circle-chevron-up"></i>
-                </button>
-                <button class="scene-button" id="prev_scene_button" title="Previous Scene">
-                    <i class="fa-thin fa-circle-chevron-left"></i>
-                </button>
-                <button class="scene-button" id="next_scene_button" title="Next Scene">
-                    <i class="fa-thin fa-circle-chevron-right"></i>
-                </button>
-                <button class="scene-button" id="rand_scene_button" title="Random Scene">
-                    <i class="fa-thin fa-shuffle"></i>
-                </button>
+            <div class="main-menu-wrapper" style="width: 50vw; left: calc(21px + 100vw);">
+                <div id="menu_toggler" class="togglebutton" role="presentation" style="width: 70px; height: 70px;">
+                    <div role="presentation">
+                        <svg class="ham ham3" viewBox="0 0 100 100" width="70px">
+                            <path class="ham-line top" d="m 30,33 h 40 c 13.100415,0 14.380204,31.80258 6.899646,33.421777 -24.612039,5.327373 9.016154,-52.337577 -12.75751,-30.563913 l -28.284272,28.284272"></path>
+                            <path class="ham-line middle" d="m 70,50 c 0,0 -32.213436,0 -40,0 -7.786564,0 -6.428571,-4.640244 -6.428571,-8.571429 0,-5.895471 6.073743,-11.783399 12.286435,-5.570707 6.212692,6.212692 28.284272,28.284272 28.284272,28.284272"></path>
+                            <path class="ham-line bottom" d="m 69.575405,67.073826 h -40 c -13.100415,0 -14.380204,-31.80258 -6.899646,-33.421777 24.612039,-5.327373 -9.016154,52.337577 12.75751,30.563913 l 28.284272,-28.284272"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="main-menu" role="presentation" style="width: 50vw; left: calc(21px + 100vw);">
+                    <div class="main-menu-links-wrapper">
+                        <!-- Menu links giữ nguyên như visual.html -->
+                    </div>
+                </div>
             </div>
-
-            <!-- Playlist -->
-            <div class="playlist-container" id="playlist_container">
-                <!-- Playlist items will be added dynamically -->
+            <section class="route-section">
+                <div class="route-inner">
+                    <div class="main">
+                        <div class="content">
+                            <div class="home-page">
+                                <h1>Swarm</h1>
+                                <h2>Marco Gomez' WebGL Portfolio</h2>
+                                <h3>#Boids</h3>
+                                <h4>by @TheCodeTherapy - https://mgz.me</h4>
+                                <img alt="Instanced meshes governed by a flocking behaviour controller class in a universe of instanced star textured particles." loading="lazy" width="1024" height="1024" decoding="async" data-nimg="1" class="home-page-image" src="./visual_files/Swarm.jpg" style="color: transparent;">
+                                <p>Instanced meshes governed by a flocking behaviour controller class in a universe of instanced star textured particles.</p>
+                                <a class="home-page-links" href="https://mgz.me/">Home</a>
+                                <a class="home-page-links" href="https://mgz.me/about/">About</a>
+                                <a class="home-page-links" href="https://mgz.me/gallery/">Gallery</a>
+                                <a class="home-page-links" href="https://mgz.me/awards/">Awards</a>
+                                <a class="home-page-links" href="https://mgz.me/contact/">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="footer">
+                <div class="copy">
+                    <span class="copy-symbol">©</span>
+                    <a href="https://x.com/TheCodeTherapy" target="_blank" rel="noopener noreferrer">Marco Gomez (@TheCodeTherapy)</a> 2025
+                </div>
             </div>
         </div>
     </div>
-    
-    <script src="./visual_files/main-fdaa1ee0a0da5110.js"></script>
-    <script src="./visual_files/framework-64ad27b21261a9ce.js"></script>
-    <script src="./visual_files/webpack-edb2c4a2f993b241.js"></script>
-    <script src="./visual_files/[scene]-065109fd0275efe4.js"></script>
+    <script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"scene":"Swarm","thumbURL":"/assets/thumbnails/Swarm.jpg"},"__N_SSG":true},"page":"/scenes/[scene]","query":{"scene":"Swarm"},"buildId":"muC72ZvF1QV4vWLtMoECr","isFallback":false,"gsp":true,"scriptLoader":[]}</script>
+    <script src="./visual_files/polyfills-78c92fac7aa8fdd8.js" defer></script>
+    <script src="./visual_files/webpack-edb2c4a2f993b241.js" defer></script>
+    <script src="./visual_files/framework-64ad27b21261a9ce.js" defer></script>
+    <script src="./visual_files/main-fdaa1ee0a0da5110.js" defer></script>
+    <script src="./visual_files/_app-e5b0d1bc4a1b4a04.js" defer></script>
+    <script src="./visual_files/962-e60f5ac397ddcfd8.js" defer></script>
+    <script src="./visual_files/675-f8402c4ff683825d.js" defer></script>
+    <script src="./visual_files/[scene]-065109fd0275efe4.js" defer></script>
+    <script src="./visual_files/_buildManifest.js" defer></script>
+    <script src="./visual_files/_ssgManifest.js" defer></script>
     <script>
         // Audio player functionality
         const audioPlayer = document.getElementById('audio_player');
