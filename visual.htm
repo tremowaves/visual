@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- saved from url=(0028)https://mgz.me/scenes/Swarm/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="apple-touch-icon" href="https://mgz.me/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://mgz.me/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://mgz.me/favicon-16x16.png"><link rel="icon" href="https://mgz.me/favicon.ico"><title>Swarm at WebGL Lab - Marco Gomez</title><meta name="robots" content="index,follow"><meta name="description" content="Swarm at Marco Gomez&#39; WebGL Lab - @TheCodeTherapy"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@TheCodeTherapy"><meta name="twitter:creator" content="@TheCodeTherapy"><meta property="og:title" content="Swarm at WebGL Lab - Marco Gomez"><meta property="og:description" content="Swarm at Marco Gomez&#39; WebGL Lab - @TheCodeTherapy"><meta property="og:image" content="https://mgz.me/assets/thumbnails/Swarm.jpg"><meta property="og:image:alt" content="Swarm at WebGL Lab - @TheCodeTherapy"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1024"><meta property="og:image:height" content="1024"><meta property="og:locale" content="en"><meta property="og:site_name" content="mgz.me"><meta property="keywords" content="Swarm, Boids, TheCodeTherapy, Marco Gomez, WebGL, ThreeJS, NextJS, React, shaders, GLSL, javascript, demoscene, mgz.me"><meta name="next-head-count" content="22"><script async="" src="./visual_files/js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-169314453-1', {
+  page_path: window.location.pathname,
+});</script><link data-next-font="" rel="preconnect" href="https://mgz.me/" crossorigin="anonymous"><link rel="preload" href="./visual_files/09671da28aa56a04.css" as="style"><link rel="stylesheet" href="./visual_files/09671da28aa56a04.css" data-n-g=""><noscript data-n-css=""></noscript><script defer="" nomodule="" src="./visual_files/polyfills-78c92fac7aa8fdd8.js"></script><script src="./visual_files/webpack-edb2c4a2f993b241.js" defer=""></script><script src="./visual_files/framework-64ad27b21261a9ce.js" defer=""></script><script src="./visual_files/main-fdaa1ee0a0da5110.js" defer=""></script><script src="./visual_files/_app-e5b0d1bc4a1b4a04.js" defer=""></script><script src="./visual_files/962-e60f5ac397ddcfd8.js" defer=""></script><script src="./visual_files/675-f8402c4ff683825d.js" defer=""></script><script src="./visual_files/[scene]-065109fd0275efe4.js" defer=""></script><script src="./visual_files/_buildManifest.js" defer=""></script><script src="./visual_files/_ssgManifest.js" defer=""></script><style id="mttstyle">
+    #mttContainer {
+      left: 0 !important;
+      top: 0 !important;
+      width: 1000px !important;
+      margin: 0px !important;
+      margin-left: -500px !important;
+      position: fixed !important;
+      z-index: 2147483647 !important; /* Maximum z-index to overcome overlays */
+      background: none !important;
+      pointer-events: none !important;
+      display: inline-block !important;
+      visibility: visible  !important;
+      white-space: pre-line;
+    }
+    .tippy-box[data-theme~="custom"], .tippy-content *{
+      font-size: 18px  !important;
+      text-align: center !important;
+      overflow-wrap: break-word !important;
+      color: #ffffffff !important;
+      font-family: 
+        -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif  !important;
+      white-space: pre-line;
+    }
+    .tippy-box[data-theme~="custom"]{
+      max-width: 200px  !important;
+      backdrop-filter: blur(6px) !important;
+      background-color: #00000080 !important;
+      border: 1px solid #ffffff00; 
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+    [data-tippy-root] {
+      display: inline-block !important;
+      visibility: visible  !important;
+      position: absolute !important;
+    }
+    .tippy-box[data-theme~='custom'][data-placement^='top'] > .tippy-arrow::before { 
+      border-top-color: #00000080 !important;
+    }
+    .tippy-box[data-theme~='custom'][data-placement^='bottom'] > .tippy-arrow::before {
+      border-bottom-color: #00000080 !important;
+    }
+    .tippy-box[data-theme~='custom'][data-placement^='left'] > .tippy-arrow::before {
+      border-left-color: #00000080 !important;
+    }
+    .tippy-box[data-theme~='custom'][data-placement^='right'] > .tippy-arrow::before {
+      border-right-color: #00000080 !important;
+    }
+    .mtt-highlight{
+      background-color: #21dc6d40  !important;
+      position: absolute !important;   
+      z-index: 2147483646 !important; /* Slightly lower than tooltip */
+      pointer-events: none !important;
+      display: inline !important;
+      border-radius: 3px !important;
+    }
+    .mtt-image{
+      width: 180px  !important;
+      border-radius: 3px !important;
+    }
+    .ocr_text_div{
+      position: absolute;
+      opacity: 0.5;
+      color: transparent !important;
+      border: 2px solid CornflowerBlue;
+      background: none !important;
+      border-radius: 3px !important;
+    }</style><style id="mttstyleSubtitle">
+    #ytp-caption-window-container .ytp-caption-segment {
+      cursor: text !important;
+      user-select: text !important;
+      font-family: 
+      -apple-system, BlinkMacSystemFont,
+      "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans",
+      "Droid Sans", "Helvetica Neue", sans-serif  !important;
+    }
+    .caption-visual-line{
+      display: flex  !important;
+      align-items: stretch  !important;
+      direction: ltr
+    }
+    .captions-text .caption-visual-line:first-of-type:after {
+      content: '⣿⣿';
+      border-radius: 3px !important;
+      color: white !important;
+      background: transparent !important;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+      display: inline-block;
+      vertical-align: top;
+      opacity:0;
+      transition: opacity 0.7s ease-in-out;
+    }
+    .ytp-caption-segment{
+      color: white !important;
+      text-shadow: 1px 1px 2px black !important;
+      backdrop-filter: blur(3px) !important;
+      background: rgba(8, 8, 8, 0.1)  !important;
+    }
+    .captions-text:hover .caption-visual-line:first-of-type:after {
+      opacity:1;
+    }
+    .ytp-pause-overlay {
+      display: none !important;
+    }
+    .ytp-expand-pause-overlay .caption-window {
+      display: block !important;
+    }
+  </style><link as="script" rel="prefetch" href="https://mgz.me/_next/static/chunks/pages/about-0fbc62652968c535.js"><link as="script" rel="prefetch" href="https://mgz.me/_next/static/chunks/pages/gallery-bb7f5c04f40fbea6.js"><link as="script" rel="prefetch" href="https://mgz.me/_next/static/chunks/pages/awards-28977166cd94ce36.js"><link as="script" rel="prefetch" href="https://mgz.me/_next/static/chunks/pages/contact-bcfefa6c042d9e58.js"><link as="script" rel="prefetch" href="https://mgz.me/_next/static/chunks/pages/index-c58ad3c38bd14ff1.js"></head><body data-new-gr-c-s-check-loaded="14.1105.0" data-gr-ext-installed=""><div id="__next"><div id="asset_loader_wrapper" class="asset-loader-wrapper"></div><div id="rec_wrapper" class="rec-wrapper"></div><div id="app_root"><div id="audio_load_bar" class="audio-load-bar"></div><audio id="audio_player" style="display: none;">
+    <source src="./visual_files/audio/tremowaves_postrock.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio><div role="presentation" id="background_scene" class="background-scene" style="position: fixed; top: 0px; left: 0px; width: 100vw; height: 100vh; z-index: 0; opacity: 0.4321;"><canvas data-engine="three.js r160" width="1432" height="718" class="renderer-canvas" style="display: block; width: 1432px; height: 718px;"></canvas></div><div class="scene-nametag-wrapper"><span class="scene-info-tag" style="opacity: 0;">12/12</span><span class="scene-name-tag" style="opacity: 0;">Swarm</span></div><div class="top-bar plain"><div class="loading-bar" id="loading_bar"></div></div><div class="main-contols-wrapper" style="height: 70px; line-height: 70px;"><div class="toggler-wrapper" style="width: 70px; height: 70px;"><i class="fa-thin fa-power-off"></i><span class="temptip--triangle" data-tooltip="Play with me 😉"></span></div><div class="control-buttons"><div id="load_audio_button" class="button fa-thin fa-circle-play inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0s; cursor: default;"><span class="tooltip--triangle load_audio" data-tooltip="I&#39;m Audio-reactive! Try my Jam 😃"></span></div><div id="first_scene_button" class="button fa-thin fa-circle-chevron-up inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.12s; cursor: default;"><span class="tooltip--triangle first_scene" data-tooltip="Rewind to First Scene"></span></div><div id="prev_scene_button" class="button fa-thin fa-circle-chevron-left inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.24s; cursor: default;"><span class="tooltip--triangle prev_scene" data-tooltip="Load Previous Scene"></span></div><div id="next_scene_button" class="button fa-thin fa-circle-chevron-right inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.36s; cursor: default;"><span class="tooltip--triangle next_scene" data-tooltip="Load Next Scene"></span></div><div id="rand_scene_button" class="button fa-thin fa-shuffle inactive" style="color: rgb(204, 204, 204); text-shadow: none; animation-delay: 0.48s; cursor: default;"><span class="tooltip--triangle rand_scene" data-tooltip="Load Random Scene"></span></div></div></div><div class="main-menu-wrapper" style="width: 50vw; left: calc(21px + 100vw);"><div id="menu_toggler" class="togglebutton" role="presentation" style="width: 70px; height: 70px;"><div role="presentation"><svg class="ham ham3  " viewBox="0 0 100 100" width="70px"><path class="ham-line top" d="m 30,33 h 40 c 13.100415,0 14.380204,31.80258 6.899646,33.421777 -24.612039,5.327373 9.016154,-52.337577 -12.75751,-30.563913 l -28.284272,28.284272"></path><path class="ham-line middle" d="m 70,50 c 0,0 -32.213436,0 -40,0 -7.786564,0 -6.428571,-4.640244 -6.428571,-8.571429 0,-5.895471 6.073743,-11.783399 12.286435,-5.570707 6.212692,6.212692 28.284272,28.284272 28.284272,28.284272"></path><path class="ham-line bottom" d="m 69.575405,67.073826 h -40 c -13.100415,0 -14.380204,-31.80258 -6.899646,-33.421777 24.612039,-5.327373 -9.016154,52.337577 12.75751,30.563913 l 28.284272,-28.284272"></path></svg></div></div><div class="main-menu" role="presentation" style="width: 50vw; left: calc(21px + 100vw);"><div class="main-menu-links-wrapper"><div class="main-menu-row main-menu-row-invisible" style="transition-delay: 0s;"><div class="main-menu-item-wrapper main-menu-item-wrapper-invisible" style="transition-delay: 0s;"><div class="menu-home-link"><div class="main-menu-item"><i class="main-menu-item-icon fa-thin fa-house"></i><span class="main-menu-item-label">Home</span></div></div><div class="main-menu-separator-line main-menu-separator-line-invisible" style="transition-delay: 0s;"></div></div></div><div class="main-menu-row main-menu-row-invisible" style="transition-delay: 0s;"><div class="main-menu-item-wrapper main-menu-item-wrapper-invisible" style="transition-delay: 0s;"><a href="https://mgz.me/about/"><div class="main-menu-item"><i class="main-menu-item-icon fa-thin fa-user-tag"></i><span class="main-menu-item-label">About</span></div></a><div class="main-menu-separator-line main-menu-separator-line-invisible" style="transition-delay: 0s;"></div></div></div><div class="main-menu-row main-menu-row-invisible" style="transition-delay: 0s;"><div class="main-menu-item-wrapper main-menu-item-wrapper-invisible" style="transition-delay: 0s;"><a href="https://mgz.me/gallery/"><div class="main-menu-item"><i class="main-menu-item-icon fa-thin fa-rectangle-history"></i><span class="main-menu-item-label">Gallery</span></div></a><div class="main-menu-separator-line main-menu-separator-line-invisible" style="transition-delay: 0s;"></div></div></div><div class="main-menu-row main-menu-row-invisible" style="transition-delay: 0s;"><div class="main-menu-item-wrapper main-menu-item-wrapper-invisible" style="transition-delay: 0s;"><a href="https://mgz.me/awards/"><div class="main-menu-item"><i class="main-menu-item-icon fa-thin fa-trophy"></i><span class="main-menu-item-label">Awards</span></div></a><div class="main-menu-separator-line main-menu-separator-line-invisible" style="transition-delay: 0s;"></div></div></div><div class="main-menu-row main-menu-row-invisible" style="transition-delay: 0s;"><div class="main-menu-item-wrapper main-menu-item-wrapper-invisible" style="transition-delay: 0s;"><a href="https://mgz.me/contact/"><div class="main-menu-item"><i class="main-menu-item-icon fa-thin fa-envelope"></i><span class="main-menu-item-label">Contact</span></div></a><div class="main-menu-separator-line main-menu-separator-line-invisible" style="transition-delay: 0s;"></div></div></div></div></div></div><section class="route-section"><div class="route-inner"><div class="main"><div class="content"><div class="home-page"><h1>Swarm</h1><h2>Marco Gomez' WebGL Portfolio</h2><h3>#Boids</h3><h4>by @TheCodeTherapy - https://mgz.me</h4><img alt="Instanced meshes governed by a flocking behaviour controller class in a universe of instanced star textured particles." loading="lazy" width="1024" height="1024" decoding="async" data-nimg="1" class="home-page-image" src="./visual_files/Swarm.jpg" style="color: transparent;"><p>Instanced meshes governed by a flocking behaviour controller class in a universe of instanced star textured particles.</p><a class="home-page-links" href="https://mgz.me/">Home</a><a class="home-page-links" href="https://mgz.me/about/">About</a><a class="home-page-links" href="https://mgz.me/gallery/">Gallery</a><a class="home-page-links" href="https://mgz.me/awards/">Awards</a><a class="home-page-links" href="https://mgz.me/contact/">Contact</a></div></div></div></div></section><div class="footer"><div class="copy"><span class="copy-symbol">©</span> <a href="https://x.com/TheCodeTherapy" target="_blank" rel="noopener noreferrer">Marco Gomez (@TheCodeTherapy)</a> 2025</div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"scene":"Swarm","thumbURL":"/assets/thumbnails/Swarm.jpg"},"__N_SSG":true},"page":"/scenes/[scene]","query":{"scene":"Swarm"},"buildId":"muC72ZvF1QV4vWLtMoECr","isFallback":false,"gsp":true,"scriptLoader":[]}</script><next-route-announcer><p aria-live="assertive" id="__next-route-announcer__" role="alert" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; top: 0px; width: 1px; white-space: nowrap; overflow-wrap: normal;"></p></next-route-announcer><script src="https://mgz.me/_next/static/chunks/pages/about-0fbc62652968c535.js"></script><script src="https://mgz.me/_next/static/chunks/pages/gallery-bb7f5c04f40fbea6.js"></script><script src="https://mgz.me/_next/static/chunks/pages/awards-28977166cd94ce36.js"></script><script src="https://mgz.me/_next/static/chunks/pages/contact-bcfefa6c042d9e58.js"></script><script src="https://mgz.me/_next/static/chunks/pages/index-c58ad3c38bd14ff1.js"></script></body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
+<script>
+    const audioPlayer = document.getElementById('audio_player');
+    const loadAudioButton = document.getElementById('load_audio_button');
+    
+    loadAudioButton.addEventListener('click', function() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            loadAudioButton.classList.remove('inactive');
+        } else {
+            audioPlayer.pause();
+            loadAudioButton.classList.add('inactive');
+        }
+    });
+</script>
