@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Audio Visual Experience</title>
+    <link rel="stylesheet" href="./visual_files/09671da28aa56a04.css">
+    <style>
+        /* Custom styles for better cross-platform compatibility */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+        
+        .audio-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .audio-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .audio-button.active {
+            color: #4CAF50;
+        }
+        
+        .audio-button i {
+            font-size: 24px;
+        }
+        
+        .audio-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin: 0 10px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .audio-progress-bar {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .audio-time {
+            color: white;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .scene-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .scene-button {
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .scene-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .scene-button i {
+            font-size: 20px;
+        }
+
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1001;
+        }
+
+        .loading-bar-progress {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .playlist-container {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 10px;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 999;
+            display: none;
+        }
+
+        .playlist-container.show {
+            display: block;
+        }
+
+        .playlist-item {
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .playlist-item.active {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .playlist-item i {
+            font-size: 16px;
+        }
+
+        .playlist-item-title {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        @media (max-width: 768px) {
+            .audio-controls {
+                width: 90%;
+                justify-content: space-between;
+            }
+            
+            .audio-progress {
+                width: 100px;
+            }
+
+            .scene-controls {
+                bottom: 80px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="__next">
+        <div id="asset_loader_wrapper" class="asset-loader-wrapper"></div>
+        <div id="rec_wrapper" class="rec-wrapper"></div>
+        <div id="app_root">
+            <div class="loading-bar">
+                <div class="loading-bar-progress" id="loading_bar_progress"></div>
+            </div>
+            <div id="audio_load_bar" class="audio-load-bar"></div>
+            <audio id="audio_player" style="display: none;">
+                <source src="./visual_files/audio/your_audio_file.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div role="presentation" id="background_scene" class="background-scene">
+                <canvas data-engine="three.js r160" class="renderer-canvas"></canvas>
+            </div>
+            <div class="scene-nametag-wrapper">
+                <span class="scene-info-tag">12/12</span>
+                <span class="scene-name-tag">Swarm</span>
+            </div>
+            
+            <!-- Audio Controls -->
+            <div class="audio-controls">
+                <button class="audio-button" id="playlist_button" title="Playlist">
+                    <i class="fa-thin fa-list"></i>
+                </button>
+                <button class="audio-button" id="play_pause_button" title="Play/Pause">
+                    <i class="fa-thin fa-play"></i>
+                </button>
+                <div class="audio-progress" id="audio_progress">
+                    <div class="audio-progress-bar" id="audio_progress_bar"></div>
+                </div>
+                <span class="audio-time" id="current_time">0:00</span>
+                <span class="audio-time" id="duration">0:00</span>
+                <button class="audio-button" id="volume_button" title="Mute/Unmute">
+                    <i class="fa-thin fa-volume-high"></i>
+                </button>
+            </div>
+
+            <!-- Scene Controls -->
+            <div class="scene-controls">
+                <button class="scene-button" id="first_scene_button" title="First Scene">
+                    <i class="fa-thin fa-circle-chevron-up"></i>
+                </button>
+                <button class="scene-button" id="prev_scene_button" title="Previous Scene">
+                    <i class="fa-thin fa-circle-chevron-left"></i>
+                </button>
+                <button class="scene-button" id="next_scene_button" title="Next Scene">
+                    <i class="fa-thin fa-circle-chevron-right"></i>
+                </button>
+                <button class="scene-button" id="rand_scene_button" title="Random Scene">
+                    <i class="fa-thin fa-shuffle"></i>
+                </button>
+            </div>
+
+            <!-- Playlist -->
+            <div class="playlist-container" id="playlist_container">
+                <!-- Playlist items will be added dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="./visual_files/main-fdaa1ee0a0da5110.js"></script>
+    <script src="./visual_files/framework-64ad27b21261a9ce.js"></script>
+    <script src="./visual_files/webpack-edb2c4a2f993b241.js"></script>
+    <script src="./visual_files/[scene]-065109fd0275efe4.js"></script>
+    <script>
+        // Audio player functionality
+        const audioPlayer = document.getElementById('audio_player');
+        const playPauseButton = document.getElementById('play_pause_button');
+        const volumeButton = document.getElementById('volume_button');
+        const audioProgress = document.getElementById('audio_progress');
+        const audioProgressBar = document.getElementById('audio_progress_bar');
+        const currentTimeDisplay = document.getElementById('current_time');
+        const durationDisplay = document.getElementById('duration');
+        const loadingBarProgress = document.getElementById('loading_bar_progress');
+        const playlistButton = document.getElementById('playlist_button');
+        const playlistContainer = document.getElementById('playlist_container');
+        
+        // Scene controls
+        const firstSceneButton = document.getElementById('first_scene_button');
+        const prevSceneButton = document.getElementById('prev_scene_button');
+        const nextSceneButton = document.getElementById('next_scene_button');
+        const randSceneButton = document.getElementById('rand_scene_button');
+        
+        // Playlist functionality
+        let currentTrackIndex = 0;
+        const playlist = [
+            {
+                title: 'Tremowaves Postrock',
+                file: './visual_files/audio/tremowaves_postrock.mp3'
+            }
+            // Add more tracks here as needed
+        ];
+
+        // Initialize playlist
+        function initializePlaylist() {
+            const playlistHTML = playlist.map((track, index) => `
+                <div class="playlist-item ${index === currentTrackIndex ? 'active' : ''}" data-index="${index}">
+                    <i class="fa-thin fa-music"></i>
+                    <span class="playlist-item-title">${track.title}</span>
+                </div>
+            `).join('');
+            playlistContainer.innerHTML = playlistHTML;
+
+            // Add click event to playlist items
+            document.querySelectorAll('.playlist-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    playTrack(index);
+                });
+            });
+        }
+
+        // Play specific track
+        function playTrack(index) {
+            currentTrackIndex = index;
+            const track = playlist[index];
+            audioPlayer.src = track.file;
+            audioPlayer.play();
+            playPauseButton.innerHTML = '<i class="fa-thin fa-pause"></i>';
+            playPauseButton.classList.add('active');
+            
+            // Update active state in playlist
+            document.querySelectorAll('.playlist-item').forEach(item => {
+                item.classList.toggle('active', parseInt(item.dataset.index) === index);
+            });
+        }
+
+        // Toggle playlist visibility
+        playlistButton.addEventListener('click', function() {
+            playlistContainer.classList.toggle('show');
+        });
+
+        // Close playlist when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!playlistContainer.contains(e.target) && !playlistButton.contains(e.target)) {
+                playlistContainer.classList.remove('show');
+            }
+        });
+
+        // Handle track end
+        audioPlayer.addEventListener('ended', function() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            playTrack(currentTrackIndex);
+        });
+
+        // Format time in MM:SS
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            audioProgressBar.style.width = `${progress}%`;
+            currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+        }
+        
+        // Update loading bar
+        function updateLoadingBar(progress) {
+            loadingBarProgress.style.width = `${progress}%`;
+        }
+        
+        // Play/Pause functionality
+        playPauseButton.addEventListener('click', function() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseButton.innerHTML = '<i class="fa-thin fa-pause"></i>';
+                playPauseButton.classList.add('active');
+            } else {
+                audioPlayer.pause();
+                playPauseButton.innerHTML = '<i class="fa-thin fa-play"></i>';
+                playPauseButton.classList.remove('active');
+            }
+        });
+        
+        // Volume control
+        let isMuted = false;
+        volumeButton.addEventListener('click', function() {
+            isMuted = !isMuted;
+            audioPlayer.muted = isMuted;
+            volumeButton.innerHTML = isMuted ? 
+                '<i class="fa-thin fa-volume-xmark"></i>' : 
+                '<i class="fa-thin fa-volume-high"></i>';
+        });
+        
+        // Progress bar interaction
+        audioProgress.addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = pos * audioPlayer.duration;
+        });
+        
+        // Update duration when metadata is loaded
+        audioPlayer.addEventListener('loadedmetadata', function() {
+            durationDisplay.textContent = formatTime(audioPlayer.duration);
+        });
+        
+        // Update progress while playing
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        
+        // Handle audio end
+        audioPlayer.addEventListener('ended', function() {
+            playPauseButton.innerHTML = '<i class="fa-thin fa-play"></i>';
+            playPauseButton.classList.remove('active');
+            audioPlayer.currentTime = 0;
+        });
+
+        // Scene control functionality
+        firstSceneButton.addEventListener('click', function() {
+            // Implement first scene logic
+            updateLoadingBar(0);
+        });
+
+        prevSceneButton.addEventListener('click', function() {
+            // Implement previous scene logic
+            updateLoadingBar(25);
+        });
+
+        nextSceneButton.addEventListener('click', function() {
+            // Implement next scene logic
+            updateLoadingBar(75);
+        });
+
+        randSceneButton.addEventListener('click', function() {
+            // Implement random scene logic
+            updateLoadingBar(50);
+        });
+
+        // Initialize loading bar
+        updateLoadingBar(0);
+
+        // Initialize playlist on load
+        initializePlaylist();
+    </script>
+</body>
+</html> 
