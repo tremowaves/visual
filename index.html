@@ -183,6 +183,58 @@
                 right: 10px;
             }
         }
+
+        .scene-nametag-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .scene-info-tag {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .scene-name-tag {
+            font-size: 18px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .background-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        .renderer-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .audio-load-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1002;
+        }
+
+        .audio-load-bar-progress {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -193,7 +245,9 @@
             <div class="loading-bar">
                 <div class="loading-bar-progress" id="loading_bar_progress"></div>
             </div>
-            <div id="audio_load_bar" class="audio-load-bar"></div>
+            <div id="audio_load_bar" class="audio-load-bar">
+                <div class="audio-load-bar-progress" id="audio_load_bar_progress"></div>
+            </div>
             <audio id="audio_player" style="display: none;">
                 <source src="./visual_files/audio/tremowaves_postrock.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -396,25 +450,76 @@
             audioPlayer.currentTime = 0;
         });
 
+        // Scene initialization
+        let currentScene = 'Swarm';
+        const scenes = [
+            'Swarm',
+            'Scene 2',
+            'Scene 3',
+            'Scene 4',
+            'Scene 5',
+            'Scene 6',
+            'Scene 7',
+            'Scene 8',
+            'Scene 9',
+            'Scene 10',
+            'Scene 11',
+            'Scene 12'
+        ];
+
+        // Initialize scene
+        function initializeScene(sceneName) {
+            currentScene = sceneName;
+            document.querySelector('.scene-name-tag').textContent = sceneName;
+            document.querySelector('.scene-info-tag').textContent = `${scenes.indexOf(sceneName) + 1}/${scenes.length}`;
+            
+            // Reset loading bar
+            updateLoadingBar(0);
+            
+            // Trigger scene change in Three.js
+            if (window.sceneManager) {
+                window.sceneManager.loadScene(sceneName);
+            }
+        }
+
         // Scene control functionality
         firstSceneButton.addEventListener('click', function() {
-            // Implement first scene logic
-            updateLoadingBar(0);
+            initializeScene(scenes[0]);
         });
 
         prevSceneButton.addEventListener('click', function() {
-            // Implement previous scene logic
-            updateLoadingBar(25);
+            const currentIndex = scenes.indexOf(currentScene);
+            const prevIndex = (currentIndex - 1 + scenes.length) % scenes.length;
+            initializeScene(scenes[prevIndex]);
         });
 
         nextSceneButton.addEventListener('click', function() {
-            // Implement next scene logic
-            updateLoadingBar(75);
+            const currentIndex = scenes.indexOf(currentScene);
+            const nextIndex = (currentIndex + 1) % scenes.length;
+            initializeScene(scenes[nextIndex]);
         });
 
         randSceneButton.addEventListener('click', function() {
-            // Implement random scene logic
-            updateLoadingBar(50);
+            const randomIndex = Math.floor(Math.random() * scenes.length);
+            initializeScene(scenes[randomIndex]);
+        });
+
+        // Audio reactivity
+        audioPlayer.addEventListener('play', function() {
+            if (window.sceneManager) {
+                window.sceneManager.setAudioReactive(true);
+            }
+        });
+
+        audioPlayer.addEventListener('pause', function() {
+            if (window.sceneManager) {
+                window.sceneManager.setAudioReactive(false);
+            }
+        });
+
+        // Initialize with Swarm scene
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeScene('Swarm');
         });
 
         // Initialize loading bar
